@@ -31,7 +31,7 @@ import { DeviceLabelPipe, LinkLabelPipe, VlanColorPipe } from '../device.pipes';
       @if (device.services) {
         <div class="service-list">
           @for (svc of serviceList; track svc) {
-            <span class="svc" [style.background]="svcColor(svc).bg" [style.color]="svcColor(svc).text">{{ svc }}</span>
+            <span class="svc">{{ svc }}</span>
           }
         </div>
       }
