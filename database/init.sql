@@ -246,7 +246,7 @@ UPDATE devices SET parent_id = (SELECT id FROM (SELECT id FROM devices WHERE hos
 WHERE hostname IN (
   'LIR-TRUENAS-001','LIR-HAOS-001',
   'LIR-DEBDOCK-001','LIR-DEBDOCK-002','LIR-DEBDOCK-003',
-  'LIR-DEBAUTH-001','LIR-DEBGNS-001'
+  'LIR-DEBAUTH-001','LIR-DEBDSK-001','LIR-DEBGNS-001'
 );
 
 -- ── Données : VLANs Liré ─────────────────────────────────────
