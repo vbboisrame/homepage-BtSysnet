@@ -79,7 +79,7 @@ INSERT INTO devices (hostname, type, model, specs, link_type, services, site_id,
   'MikroTik RB4011iGS+5HacQ2HnD',
   'RouterOS · 10/100/1000 × 10 · SFP+ 10G · Wi-Fi 5ac dual-band',
   'fiber',
-  'WireGuard · NAT · Firewall · Wi-Fi ac',
+  'WireGuard · NAT · Firewall',
   1, NULL, 'active'
 ),
 (
@@ -95,7 +95,7 @@ INSERT INTO devices (hostname, type, model, specs, link_type, services, site_id,
   'MikroTik cAP ax',
   'Wi-Fi 6 · PoE in',
   'rj45',
-  'SSID HOME → VLAN 50 · VLAN 40 IOT · Mgmt VLAN 10',
+  'SSID HOME → VLAN 50 · SSID IOT → VLAN 40 · Mgmt VLAN 10',
   1, NULL, 'active'
 ),
 (
@@ -103,7 +103,7 @@ INSERT INTO devices (hostname, type, model, specs, link_type, services, site_id,
   'MikroTik cAP ax',
   'Wi-Fi 6 · PoE in',
   'rj45',
-  'SSID HOME → VLAN 50 · VLAN 40 IOT · Mgmt VLAN 10',
+  'SSID HOME → VLAN 50 · SSID IOT → VLAN 40 · Mgmt VLAN 10',
   1, NULL, 'active'
 ),
 (
@@ -111,7 +111,7 @@ INSERT INTO devices (hostname, type, model, specs, link_type, services, site_id,
   'MikroTik cAP ax',
   'Wi-Fi 6 · PoE in',
   'rj45',
-  'SSID HOME → VLAN 50 · VLAN 40 IOT · Mgmt VLAN 10',
+  'SSID HOME → VLAN 50 · SSID IOT → VLAN 40 · Mgmt VLAN 10',
   1, NULL, 'active'
 ),
 (

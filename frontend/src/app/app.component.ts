@@ -13,7 +13,7 @@ import { RouterOutlet } from '@angular/router';
       <!-- Header global -->
       <header class="app-header">
         <div class="header-left">
-          <span class="header-title">PROXIMA</span>
+          <span class="header-title">BtSysnet</span>
           <span class="header-sub">BtSysnet — Infrastructure Réseau</span>
         </div>
         <div class="header-meta">
