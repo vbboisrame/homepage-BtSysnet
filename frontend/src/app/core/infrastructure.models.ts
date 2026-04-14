@@ -30,6 +30,7 @@ export interface Device {
   status: 'active' | 'planned' | 'placeholder';
   site_name?: string;
   site_code?: string;
+  vlans?: number[];      // numéros de VLAN associés à cet équipement
   children?: Device[];   // VMs hébergées sur cet équipement
 }
 

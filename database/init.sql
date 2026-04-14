@@ -273,11 +273,22 @@ INSERT INTO vlans (number, name, ip_range, gateway, type, mtu, site_id) VALUES
 
 INSERT INTO vlan_services (vlan_id, name, icon, color) VALUES
 -- VLAN 10 Liré
+(1, 'Proxmox VE',   'V', '#1a1a1a'),
+(1, 'Proxmox Backup Server', 'B', '#1a1a1a'),
 (1, 'Authentik',   'A', '#7c3aed'),
-(1, 'Docker (×3)', 'D', '#2496ed'),
+(1, 'Docker', 'D', '#2496ed'),
 (1, 'Guacamole',   'G', '#3daa4a'),
 (1, 'Homarr',      'H', '#f97316'),
 (1, 'Scanopy',     'S', '#7c3aed'),
+(1, 'Netbox',      'N', '#1a1a1a'),
+(1, 'Nginx Proxy Manager', 'N', '#1a1a1a'),
+(1, 'Portainer',    'P', '#1a1a1a'),
+(1, 'Portainer Agent', 'P', '#1a1a1a'),
+(1, 'Proxmox VE',   'V', '#1a1a1a'),
+(1, 'Proxmox Backup Server', 'B', '#1a1a1a'),
+(1, 'Scanopy Server', 'S', '#7c3aed'),
+(1, 'Scanopy Daemon', 'S', '#7c3aed'),
+
 -- VLAN 20 Liré
 (2, 'TrueNAS (VM)', 'T', '#0095d5'),
 (2, 'iSCSI target', 'i', '#0095d5'),
@@ -311,3 +322,26 @@ INSERT INTO vlan_services (vlan_id, name, icon, color) VALUES
 (11, 'TV · PC',           '📱', '#1a1a1a'),
 (11, 'HomePod · Téléphones','🎵','#1a1a1a');
 -- VLAN 60 Évrunes : vide pour l'instant
+
+-- ── Associations équipements ↔ VLANs ────────────────────────
+
+INSERT INTO device_vlans (device_id, vlan_id)
+SELECT d.id, v.id FROM devices d JOIN vlans v ON v.site_id = d.site_id WHERE d.hostname = 'LIR-PXMPVE-001'  AND v.number = 10;
+INSERT INTO device_vlans (device_id, vlan_id)
+SELECT d.id, v.id FROM devices d JOIN vlans v ON v.site_id = d.site_id WHERE d.hostname = 'LIR-TRUENAS-001' AND v.number = 20;
+INSERT INTO device_vlans (device_id, vlan_id)
+SELECT d.id, v.id FROM devices d JOIN vlans v ON v.site_id = d.site_id WHERE d.hostname = 'LIR-PXMPBS-001'  AND v.number = 30;
+INSERT INTO device_vlans (device_id, vlan_id)
+SELECT d.id, v.id FROM devices d JOIN vlans v ON v.site_id = d.site_id WHERE d.hostname = 'LIR-HAOS-001'    AND v.number = 40;
+INSERT INTO device_vlans (device_id, vlan_id)
+SELECT d.id, v.id FROM devices d JOIN vlans v ON v.site_id = d.site_id WHERE d.hostname = 'LIR-DEBDOCK-001' AND v.number = 10;
+INSERT INTO device_vlans (device_id, vlan_id)
+SELECT d.id, v.id FROM devices d JOIN vlans v ON v.site_id = d.site_id WHERE d.hostname = 'LIR-DEBDOCK-002' AND v.number = 10;
+INSERT INTO device_vlans (device_id, vlan_id)
+SELECT d.id, v.id FROM devices d JOIN vlans v ON v.site_id = d.site_id WHERE d.hostname = 'LIR-DEBDOCK-003' AND v.number = 10;
+INSERT INTO device_vlans (device_id, vlan_id)
+SELECT d.id, v.id FROM devices d JOIN vlans v ON v.site_id = d.site_id WHERE d.hostname = 'LIR-DEBAUTH-001' AND v.number = 10;
+INSERT INTO device_vlans (device_id, vlan_id)
+SELECT d.id, v.id FROM devices d JOIN vlans v ON v.site_id = d.site_id WHERE d.hostname = 'LIR-DEBDSK-001'  AND v.number = 10;
+INSERT INTO device_vlans (device_id, vlan_id)
+SELECT d.id, v.id FROM devices d JOIN vlans v ON v.site_id = d.site_id WHERE d.hostname = 'LIR-DEBGNS-001'  AND v.number = 60;

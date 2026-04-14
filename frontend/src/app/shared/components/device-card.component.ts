@@ -1,12 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Device } from '../../core/infrastructure.models';
-import { DeviceLabelPipe, LinkLabelPipe } from '../device.pipes';
+import { DeviceLabelPipe, LinkLabelPipe, VlanColorPipe } from '../device.pipes';
 
 @Component({
   selector: 'app-device-card',
   standalone: true,
-  imports: [CommonModule, DeviceLabelPipe, LinkLabelPipe],
+  imports: [CommonModule, DeviceLabelPipe, LinkLabelPipe, VlanColorPipe],
   template: `
     <div class="device" [ngClass]="'device-' + device.type"
          [class.device-placeholder]="device.status !== 'active'">
@@ -49,10 +49,23 @@ import { DeviceLabelPipe, LinkLabelPipe } from '../device.pipes';
             @for (vm of device.children; track vm.id) {
               <div class="vm" [ngClass]="'vm-' + vmColor(vm.type)">
                 <div class="vm-name">{{ vm.hostname }}</div>
+                @if (vm.model) {
+                  <div class="vm-model">{{ vm.model }}</div>
+                }
+                @if (vm.specs) {
+                  <div class="vm-specs">{{ vm.specs }}</div>
+                }
                 @if (vm.services) {
                   <div class="service-list">
                     @for (s of vmServices(vm); track s) {
                       <span class="svc">{{ s }}</span>
+                    }
+                  </div>
+                }
+                @if (vm.vlans && vm.vlans.length > 0) {
+                  <div class="vm-vlans">
+                    @for (vlan of vm.vlans; track vlan) {
+                      <span class="vm-vlan-badge" [style.background]="vlan | vlanColor">VLAN {{ vlan }}</span>
                     }
                   </div>
                 }
@@ -180,6 +193,34 @@ import { DeviceLabelPipe, LinkLabelPipe } from '../device.pipes';
     .vm-coral  .vm-name { color: #fb7185; }
     .vm-green  .vm-name { color: #34d399; }
     .vm-red    .vm-name { color: #f87171; }
+
+    .vm-model {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      color: #4b5563;
+      margin-bottom: 2px;
+    }
+    .vm-specs {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+    .vm-vlans {
+      display: flex;
+      gap: 3px;
+      flex-wrap: wrap;
+      margin-top: 5px;
+    }
+    .vm-vlan-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 3px;
+      color: #fff;
+      opacity: 0.85;
+    }
   `]
 })
 export class DeviceCardComponent {

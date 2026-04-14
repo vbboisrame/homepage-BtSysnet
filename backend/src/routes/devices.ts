@@ -7,17 +7,24 @@ const router = Router();
 // GET /api/devices — tous les équipements avec leur site
 router.get('/', async (req: Request, res: Response) => {
   try {
-    // On fait un JOIN pour avoir aussi le nom du site dans la réponse
     const [rows] = await pool.query(`
       SELECT
         d.*,
         s.name  AS site_name,
-        s.code  AS site_code
+        s.code  AS site_code,
+        GROUP_CONCAT(DISTINCT v.number ORDER BY v.number SEPARATOR ',') AS vlan_list
       FROM devices d
       JOIN sites s ON d.site_id = s.id
+      LEFT JOIN device_vlans dv ON dv.device_id = d.id
+      LEFT JOIN vlans v ON v.id = dv.vlan_id
+      GROUP BY d.id
       ORDER BY s.id, d.type, d.hostname
-    `);
-    res.json(rows);
+    `) as [any[], any];
+    const devices = rows.map((row: any) => {
+      const { vlan_list, ...rest } = row;
+      return { ...rest, vlans: vlan_list ? vlan_list.split(',').map(Number) : [] };
+    });
+    res.json(devices);
   } catch (err) {
     console.error('Erreur GET /devices :', err);
     res.status(500).json({ error: 'Erreur serveur' });
@@ -32,21 +39,31 @@ router.get('/site/:siteId', async (req: Request, res: Response) => {
       SELECT
         d.*,
         s.name AS site_name,
-        s.code AS site_code
+        s.code AS site_code,
+        GROUP_CONCAT(DISTINCT v.number ORDER BY v.number SEPARATOR ',') AS vlan_list
       FROM devices d
       JOIN sites s ON d.site_id = s.id
+      LEFT JOIN device_vlans dv ON dv.device_id = d.id
+      LEFT JOIN vlans v ON v.id = dv.vlan_id
       WHERE d.site_id = ?
+      GROUP BY d.id
       ORDER BY d.parent_id ASC, d.hostname ASC
-    `, [req.params.siteId]) as [Device[], any];
+    `, [req.params.siteId]) as [any[], any];
+
+    // Parse vlan_list → tableau de numéros
+    const devices: Device[] = rows.map((row: any) => {
+      const { vlan_list, ...rest } = row;
+      return { ...rest, vlans: vlan_list ? vlan_list.split(',').map(Number) : [] };
+    });
 
     // On construit l'arbre : équipements racine + leurs enfants
     const roots: Device[] = [];
     const map: Record<number, Device> = {};
 
-    for (const device of rows) {
+    for (const device of devices) {
       map[device.id] = { ...device, children: [] };
     }
-    for (const device of rows) {
+    for (const device of devices) {
       if (device.parent_id && map[device.parent_id]) {
         map[device.parent_id].children!.push(map[device.id]);
       } else {

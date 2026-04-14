@@ -23,6 +23,7 @@ export interface Device {
   // Champs joints (optionnels, présents si on fait un JOIN)
   site_name?: string;
   site_code?: string;
+  vlans?: number[];      // numéros de VLAN associés à cet équipement
   children?: Device[];   // VMs hébergées sur cet équipement
 }
 
