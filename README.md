@@ -6,68 +6,86 @@ Stack : **Angular 17** · **Express + Node.js** · **MariaDB 11.4** · **Docker*
 
 ---
 
-## Premier déploiement
+## Workflow de déploiement
+
+```
+PC Windows (VS Code)
+        │
+        │  git commit + git push
+        ▼
+    GitHub
+        │
+        │  git pull (sur la VM)
+        ▼
+VM Docker (EVR-DEBDOCK-001)
+        │
+        │  docker compose up -d --build
+        ▼
+Site accessible sur http://<IP-VM>:8080
+```
+
+### Déployer une mise à jour
+
+Depuis la VM :
 
 ```bash
-# 1. Cloner le dépôt
-git clone https://github.com/...
-cd homepage-BtSysnet
-
-# 2. Créer le fichier de configuration (credentials)
-cp .env.example .env
-nano .env   # renseigner les mots de passe
-
-# 3. Lancer la stack complète
+cd ~/homepage-BtSysnet
+git pull
 docker compose up -d --build
 ```
 
-L'application est accessible sur **http://localhost:8080**
+### Réinitialiser la base de données
 
-> La base de données est automatiquement initialisée au premier démarrage
-> avec toutes les données de l'infrastructure (sites, équipements, VLANs).
+À faire uniquement si `database/init.sql` a été modifié :
+
+```bash
+docker compose down -v && docker compose up -d --build
+```
+
+> ⚠️ Le `-v` supprime toutes les données. MariaDB repart de zéro depuis `init.sql`.
 
 ---
 
-## Prérequis
+## Installation initiale sur une nouvelle VM
+
+```bash
+# 1. Cloner le dépôt
+git clone https://github.com/... homepage-BtSysnet
+cd homepage-BtSysnet
+
+# 2. Créer le fichier de configuration
+cp .env.example .env
+nano .env   # renseigner les mots de passe
+
+# 3. Lancer la stack
+docker compose up -d --build
+```
+
+---
+
+## Prérequis (VM de production)
 
 | Outil | Version min | Vérification |
 |---|---|---|
 | Docker | 24+ | `docker --version` |
 | Docker Compose | 2+ | `docker compose version` |
 | Git | — | `git --version` |
-| Node.js *(dev uniquement)* | 20+ | `node --version` |
 
 ---
 
-## Commandes courantes
+## Prérequis (PC de développement)
 
-```bash
-# Démarrer
-docker compose up -d
-
-# Rebuilder après modification du code
-docker compose up -d --build
-
-# Rebuilder un seul service
-docker compose up -d --build frontend
-
-# Réinitialiser la base de données (recharge init.sql)
-docker compose down -v && docker compose up -d
-
-# Voir les logs
-docker compose logs backend --tail=50
-docker compose logs frontend --tail=50
-
-# Arrêter
-docker compose down
-```
+| Outil | Version min |
+|---|---|
+| Node.js | 20+ |
+| npm | 10+ |
+| Git | — |
 
 ---
 
-## Démarrage en mode développement
+## Développement local
 
-En mode dev, le rechargement automatique est actif : toute modification de fichier
-rafraîchit instantanément le navigateur.
+Pour itérer rapidement sans passer par Docker :
 
 ### Étape 1 — MariaDB via Docker
 
@@ -80,7 +98,7 @@ docker compose up -d mariadb
 ```bash
 cd backend
 npm install       # une seule fois
-npm run dev
+npm run dev       # rechargement automatique
 ```
 
 Backend disponible sur **http://localhost:3000**
@@ -92,7 +110,7 @@ Dans un nouveau terminal :
 ```bash
 cd frontend
 npm install       # une seule fois
-npm start
+npm start         # rechargement automatique
 ```
 
 Frontend disponible sur **http://localhost:4200**
@@ -111,40 +129,32 @@ homepage-BtSysnet/
 ├── docker-compose.yml              ← Orchestration des 3 services
 │
 ├── database/
-│   └── init.sql                    ← Schéma + données initiales
+│   └── init.sql                    ← Schéma + données (modifié ici = down -v requis)
 │
 ├── backend/                        ← API REST (Node.js + Express)
 │   └── src/
-│       ├── index.ts                ← Point d'entrée, configuration Express
-│       ├── types.ts                ← Interfaces TypeScript (Site, Device, Vlan)
-│       ├── db/
-│       │   └── pool.ts             ← Pool de connexions MariaDB
+│       ├── index.ts                ← Point d'entrée Express
+│       ├── types.ts                ← Interfaces TypeScript
+│       ├── db/pool.ts              ← Connexion MariaDB
 │       └── routes/
-│           ├── sites.ts            ← GET /api/sites
-│           ├── devices.ts          ← GET /api/devices, /api/devices/site/:id
-│           └── vlans.ts            ← GET /api/vlans, /api/vlans/site/:id
+│           ├── sites.ts
+│           ├── devices.ts
+│           └── vlans.ts
 │
 └── frontend/                       ← Application Angular 17
     └── src/app/
-        ├── app.component.ts        ← Racine : header + router-outlet
-        ├── app.routes.ts           ← Définition des URLs
-        ├── app.config.ts           ← Configuration (HttpClient, Router)
-        │
         ├── core/
-        │   ├── api.service.ts      ← Appels HTTP vers le backend
-        │   └── infrastructure.models.ts  ← Types TypeScript côté Angular
-        │
+        │   ├── api.service.ts                ← Appels HTTP
+        │   └── infrastructure.models.ts      ← Types TypeScript
         ├── shared/
-        │   ├── device.pipes.ts     ← Pipes de formatage (labels, couleurs)
+        │   ├── device.pipes.ts               ← Pipes de formatage
         │   └── components/
-        │       ├── site-panel.component.ts   ← Panneau d'un site
-        │       ├── device-card.component.ts  ← Carte d'un équipement
-        │       ├── vlan-card.component.ts    ← Carte d'un VLAN
-        │       └── recap-table.component.ts  ← Tableau récapitulatif
-        │
-        └── features/
-            └── diagram/
-                └── diagram.component.ts      ← Page principale
+        │       ├── site-panel.component.ts
+        │       ├── device-card.component.ts
+        │       ├── vlan-card.component.ts
+        │       └── recap-table.component.ts
+        └── features/diagram/
+            └── diagram.component.ts          ← Page principale
 ```
 
 ---
@@ -155,10 +165,8 @@ homepage-BtSysnet/
 |---|---|---|
 | GET | `/health` | Santé du serveur |
 | GET | `/api/sites` | Tous les sites |
-| GET | `/api/devices` | Tous les équipements (avec site) |
-| GET | `/api/devices/site/:id` | Équipements d'un site (arborescence VM) |
-| GET | `/api/devices/:id` | Un équipement par ID |
-| GET | `/api/vlans` | Tous les VLANs (avec services) |
+| GET | `/api/devices` | Tous les équipements |
+| GET | `/api/devices/site/:id` | Équipements d'un site (arborescence) |
 | GET | `/api/vlans/site/:id` | VLANs d'un site |
 
 ---
@@ -181,4 +189,4 @@ Copie `.env.example` en `.env` et remplis les valeurs :
 ## Documentation
 
 Consulte [ARCHITECTURE.md](ARCHITECTURE.md) pour comprendre comment le code
-fonctionne et comment le modifier toi-même.
+fonctionne et comment le modifier.

@@ -126,7 +126,6 @@ INSERT INTO devices (hostname, type, model, specs, link_type, services, site_id,
   'LIR-TRUENAS-001', 'nas',
   'TrueNAS Scale (VM Proxmox)',
   '7 vCPU · 64 Go RAM',
-  'rj45',
   'TrueNAS · iSCSI target · Jumbo frames',
   1, NULL, 'active'  -- parent_id sera mis à jour après
 ),
@@ -141,16 +140,21 @@ INSERT INTO devices (hostname, type, model, specs, link_type, services, site_id,
 (
   'LIR-HAOS-001', 'ha',
   'VM Proxmox (HAOS)',
-  'Home Assistant OS · VM dédiée',
-  'rj45',
+  'Home Assistant OS',
   'Home Assistant OS · Frigate',
   1, NULL, 'active'
+),
+(
+   'LIR-FRIGATE-001', 'server',
+   'Frigate',
+   '4 vCPU · 8 Go RAM',
+    'Frigate NVR',
+    1, NULL, 'active'
 ),
 (
   'LIR-DEBDOCK-001', 'server',
   'Debian 13 (VM Proxmox)',
   '2 vCPU · 8 Go RAM',
-  'rj45',
   'Portainer · Nginx Proxy Manager · Scanopy Daemon · Homarr · it-tools',
   1, NULL, 'active'
 ),
@@ -158,7 +162,6 @@ INSERT INTO devices (hostname, type, model, specs, link_type, services, site_id,
   'LIR-DEBDOCK-002', 'server',
   'Debian 13 (VM Proxmox)',
   '4 vCPU · 4 Go RAM',
-  'rj45',
   'Guacamole · Portainer Agent · Scanopy Daemon',
   1, NULL, 'active'
 ),
@@ -166,7 +169,6 @@ INSERT INTO devices (hostname, type, model, specs, link_type, services, site_id,
   'LIR-DEBDOCK-004', 'server',
   'Debian 13 (VM Proxmox)',
   '4 vCPU · 8 Go RAM',
-  'rj45',
   'Netbox · Portainer Agent · Scanopy Server · Scanopy Daemon',
   1, NULL, 'active'
 ),
@@ -174,7 +176,6 @@ INSERT INTO devices (hostname, type, model, specs, link_type, services, site_id,
   'LIR-DEBAUTH-001', 'server',
   'Debian 13 (VM Proxmox)',
   '2 vCPU · 4 Go RAM',
-  'rj45',
   'Authentik · Portainer Agent · Scanopy Daemon',
   1, NULL, 'active'
 ),
@@ -182,7 +183,6 @@ INSERT INTO devices (hostname, type, model, specs, link_type, services, site_id,
   'LIR-DEBDSK-001', 'server',
   'Debian 13 KDE (VM Proxmox)',
   '4 vCPU · 8 Go RAM',
-  'rj45',
   'KDE Plasma · RDP · Jump host',
   1, NULL, 'active'
 ),
@@ -190,7 +190,6 @@ INSERT INTO devices (hostname, type, model, specs, link_type, services, site_id,
   'LIR-DEBGNS-001', 'gns',
   'Debian 13 (VM Proxmox)',
   '8 vCPU · 16 Go RAM',
-  'rj45',
   'GNS3 · émulation réseau',
   1, NULL, 'active'
 );
@@ -345,3 +344,5 @@ INSERT INTO device_vlans (device_id, vlan_id)
 SELECT d.id, v.id FROM devices d JOIN vlans v ON v.site_id = d.site_id WHERE d.hostname = 'LIR-DEBDSK-001'  AND v.number = 10;
 INSERT INTO device_vlans (device_id, vlan_id)
 SELECT d.id, v.id FROM devices d JOIN vlans v ON v.site_id = d.site_id WHERE d.hostname = 'LIR-DEBGNS-001'  AND v.number = 60;
+INSERT INTO device_vlans (device_id, vlan_id)
+SELECT d.id, v.id FROM devices d JOIN vlans v ON v.site_id = d.site_id WHERE d.hostname = 'LIR-FRIGATE-001'  AND v.number = 40;
