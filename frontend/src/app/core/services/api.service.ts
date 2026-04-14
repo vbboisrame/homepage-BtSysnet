@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, forkJoin, map } from 'rxjs';
-import { Site, Device, Vlan, SiteDiagram } from '../models/infrastructure.models';
+import { Observable, forkJoin } from 'rxjs';
+import { Site, Device, Vlan } from '../models/infrastructure.models';
 
 // @Injectable signifie que ce service peut être injecté
 // dans n'importe quel composant Angular.
@@ -43,12 +43,8 @@ export class ApiService {
   // forkJoin = lance plusieurs appels en parallèle,
   // attend que TOUS soient terminés, puis retourne les résultats.
 
-  getDiagramData(): Observable<SiteDiagram[]> {
-    return this.getSites().pipe(
-      map(sites => sites.filter(s => s.status === 'active')),
-      // Pour chaque site actif, on charge équipements + VLANs en parallèle
-      // Note: en pratique on utilise switchMap ici, simplifié pour clarté
-    );
+  getAllDevices(): Observable<Device[]> {
+    return this.http.get<Device[]>(`${this.base}/devices`);
   }
 
   getSiteDiagram(siteId: number): Observable<{ devices: Device[], vlans: Vlan[] }> {

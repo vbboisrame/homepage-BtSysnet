@@ -259,7 +259,7 @@ export class DiagramComponent implements OnInit {
     // puis on charge tous les équipements pour le tableau récap
     forkJoin({
       sites:   this.api.getSites(),
-      devices: this.api['http'].get<Device[]>('/api/devices')
+      devices: this.api.getAllDevices()
     }).subscribe({
       next: ({ sites, devices }) => {
         this.sites      = sites;
