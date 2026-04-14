@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { DeviceType, LinkType } from '../../core/models/infrastructure.models';
+import { DeviceType, LinkType } from '../core/infrastructure.models';
 
 // Un Pipe transforme une valeur dans un template Angular.
 // Exemple : {{ device.type | deviceLabel }} → "Routeur WireGuard"
