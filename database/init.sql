@@ -203,7 +203,7 @@ INSERT INTO devices (hostname, type, model, specs, link_type, services, site_id,
   'MikroTik CSS326-24G-2S+RM',
   '24× RJ45 1G · 2× SFP+ 10G',
   'rj45',
-  'Switch cœur Évrunes',
+  'Switch cœur · trunk all VLANs',
   2, NULL, 'active'
 ),
 (
