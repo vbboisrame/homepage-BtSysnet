@@ -126,6 +126,7 @@ INSERT INTO devices (hostname, type, model, specs, link_type, services, site_id,
   'LIR-TRUENAS-001', 'nas',
   'TrueNAS Scale (VM Proxmox)',
   '7 vCPU · 64 Go RAM',
+  NULL,
   'TrueNAS · iSCSI target · Jumbo frames',
   1, NULL, 'active'  -- parent_id sera mis à jour après
 ),
@@ -141,20 +142,23 @@ INSERT INTO devices (hostname, type, model, specs, link_type, services, site_id,
   'LIR-HAOS-001', 'ha',
   'VM Proxmox (HAOS)',
   'Home Assistant OS',
+  NULL,
   'Home Assistant OS · Frigate',
   1, NULL, 'active'
 ),
 (
-   'LIR-FRIGATE-001', 'server',
-   'Frigate',
-   '4 vCPU · 8 Go RAM',
-    'Frigate NVR',
-    1, NULL, 'active'
+  'LIR-FRIGATE-001', 'server',
+  'Frigate (VM Proxmox)',
+  '4 vCPU · 8 Go RAM',
+  NULL,
+  'Frigate NVR',
+  1, NULL, 'active'
 ),
 (
   'LIR-DEBDOCK-001', 'server',
   'Debian 13 (VM Proxmox)',
   '2 vCPU · 8 Go RAM',
+  NULL,
   'Portainer · Nginx Proxy Manager · Scanopy Daemon · Homarr · it-tools',
   1, NULL, 'active'
 ),
@@ -162,6 +166,7 @@ INSERT INTO devices (hostname, type, model, specs, link_type, services, site_id,
   'LIR-DEBDOCK-002', 'server',
   'Debian 13 (VM Proxmox)',
   '4 vCPU · 4 Go RAM',
+  NULL,
   'Guacamole · Portainer Agent · Scanopy Daemon',
   1, NULL, 'active'
 ),
@@ -169,6 +174,7 @@ INSERT INTO devices (hostname, type, model, specs, link_type, services, site_id,
   'LIR-DEBDOCK-004', 'server',
   'Debian 13 (VM Proxmox)',
   '4 vCPU · 8 Go RAM',
+  NULL,
   'Netbox · Portainer Agent · Scanopy Server · Scanopy Daemon',
   1, NULL, 'active'
 ),
@@ -176,6 +182,7 @@ INSERT INTO devices (hostname, type, model, specs, link_type, services, site_id,
   'LIR-DEBAUTH-001', 'server',
   'Debian 13 (VM Proxmox)',
   '2 vCPU · 4 Go RAM',
+  NULL,
   'Authentik · Portainer Agent · Scanopy Daemon',
   1, NULL, 'active'
 ),
@@ -183,6 +190,7 @@ INSERT INTO devices (hostname, type, model, specs, link_type, services, site_id,
   'LIR-DEBDSK-001', 'server',
   'Debian 13 KDE (VM Proxmox)',
   '4 vCPU · 8 Go RAM',
+  NULL,
   'KDE Plasma · RDP · Jump host',
   1, NULL, 'active'
 ),
@@ -190,6 +198,7 @@ INSERT INTO devices (hostname, type, model, specs, link_type, services, site_id,
   'LIR-DEBGNS-001', 'gns',
   'Debian 13 (VM Proxmox)',
   '8 vCPU · 16 Go RAM',
+  NULL,
   'GNS3 · émulation réseau',
   1, NULL, 'active'
 );
@@ -243,7 +252,7 @@ INSERT INTO devices (hostname, type, model, specs, link_type, services, site_id,
 
 UPDATE devices SET parent_id = (SELECT id FROM (SELECT id FROM devices WHERE hostname = 'LIR-PXMPVE-001') t)
 WHERE hostname IN (
-  'LIR-TRUENAS-001','LIR-HAOS-001',
+  'LIR-TRUENAS-001','LIR-HAOS-001','LIR-FRIGATE-001',
   'LIR-DEBDOCK-001','LIR-DEBDOCK-002','LIR-DEBDOCK-004',
   'LIR-DEBAUTH-001','LIR-DEBDSK-001','LIR-DEBGNS-001'
 );
