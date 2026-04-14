@@ -246,3 +246,10 @@ Le backend lit ces variables (avec des valeurs par défaut) :
 | `CORS_ORIGIN` | `http://localhost:4200` | Origine autorisée (CORS) |
 
 > En production, change les mots de passe dans `docker-compose.yml` !
+
+
+
+git clone https://github.com/...
+cp .env.example .env
+nano .env   # remplir les vrais mots de passe
+docker compose up -d --build

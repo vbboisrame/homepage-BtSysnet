@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS device_vlans (
 INSERT INTO sites (code, name, location, status, wg_ip) VALUES
   ('LIR', 'Liré',           'Maine-et-Loire (49)', 'active',      '10.255.255.1'),
   ('EVR', 'Évrunes',        'Maine-et-Loire (49)', 'active',      '10.255.255.2'),
-  ('NS',  'Nantes Saverne', 'Loire-Atlantique (44)', 'inactive',  '10.255.255.3');
+  ('NS',  'Nantes Saverne', 'Loire-Atlantique (44)', 'placeholder', NULL);
 
 -- ── Données : Équipements Liré ───────────────────────────────
 

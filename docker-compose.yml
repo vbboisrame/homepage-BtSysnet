@@ -5,11 +5,12 @@ services:
     image: mariadb:11.4
     container_name: proxima-mariadb
     restart: unless-stopped
+    env_file: .env
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: proxima_infra
-      MYSQL_USER: proxima
-      MYSQL_PASSWORD: proximapassword
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE:      ${MYSQL_DATABASE}
+      MYSQL_USER:          ${MYSQL_USER}
+      MYSQL_PASSWORD:      ${MYSQL_PASSWORD}
     volumes:
       - mariadb_data:/var/lib/mysql
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
@@ -25,14 +26,15 @@ services:
       dockerfile: Dockerfile
     container_name: proxima-backend
     restart: unless-stopped
+    env_file: .env
     environment:
-      DB_HOST: mariadb
-      DB_PORT: 3306
-      DB_USER: proxima
-      DB_PASSWORD: proximapassword
-      DB_NAME: proxima_infra
-      PORT: 3000
-      CORS_ORIGIN: http://localhost:4200
+      DB_HOST:     ${DB_HOST}
+      DB_PORT:     ${DB_PORT}
+      DB_USER:     ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME:     ${DB_NAME}
+      PORT:        ${PORT}
+      CORS_ORIGIN: ${CORS_ORIGIN}
     ports:
       - "3000:3000"
     depends_on:
