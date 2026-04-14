@@ -31,7 +31,7 @@ import { DeviceLabelPipe, LinkLabelPipe, VlanColorPipe } from '../device.pipes';
       @if (device.services) {
         <div class="service-list">
           @for (svc of serviceList; track svc) {
-            <span class="svc">{{ svc }}</span>
+            <span class="svc" [style.background]="svcColor(svc).bg" [style.color]="svcColor(svc).text">{{ svc }}</span>
           }
         </div>
       }
@@ -47,8 +47,8 @@ import { DeviceLabelPipe, LinkLabelPipe, VlanColorPipe } from '../device.pipes';
           <div class="vms-title">VMs / Conteneurs</div>
           <div class="vm-row">
             @for (vm of device.children; track vm.id) {
-              <div class="vm" [ngClass]="'vm-' + vmColor(vm.type)">
-                <div class="vm-name">{{ vm.hostname }}</div>
+              <div class="vm" [style.border-left-color]="vm.vlans?.[0] | vlanColor">
+                <div class="vm-name" [style.color]="vm.vlans?.[0] | vlanColor">{{ vm.hostname }}</div>
                 @if (vm.model) {
                   <div class="vm-model">{{ vm.model }}</div>
                 }
@@ -58,7 +58,7 @@ import { DeviceLabelPipe, LinkLabelPipe, VlanColorPipe } from '../device.pipes';
                 @if (vm.services) {
                   <div class="service-list">
                     @for (s of vmServices(vm); track s) {
-                      <span class="svc">{{ s }}</span>
+                      <span class="svc" [style.background]="svcColor(s).bg" [style.color]="svcColor(s).text">{{ s }}</span>
                     }
                   </div>
                 }
@@ -175,12 +175,6 @@ import { DeviceLabelPipe, LinkLabelPipe, VlanColorPipe } from '../device.pipes';
       border-left: 2px solid #4b5563;
       min-width: 120px;
     }
-    .vm-purple { border-color: #7c3aed; }
-    .vm-amber  { border-color: #d97706; }
-    .vm-coral  { border-color: #e11d48; }
-    .vm-green  { border-color: #059669; }
-    .vm-gray   { border-color: #4b5563; }
-    .vm-red    { border-color: #dc2626; }
     .vm-name {
       font-family: 'JetBrains Mono', monospace;
       font-size: 9px;
@@ -188,11 +182,6 @@ import { DeviceLabelPipe, LinkLabelPipe, VlanColorPipe } from '../device.pipes';
       color: #94a3b8;
       margin-bottom: 3px;
     }
-    .vm-purple .vm-name { color: #a78bfa; }
-    .vm-amber  .vm-name { color: #fbbf24; }
-    .vm-coral  .vm-name { color: #fb7185; }
-    .vm-green  .vm-name { color: #34d399; }
-    .vm-red    .vm-name { color: #f87171; }
 
     .vm-model {
       font-family: 'JetBrains Mono', monospace;
@@ -240,15 +229,26 @@ export class DeviceCardComponent {
       : [];
   }
 
-  // Couleur de la VM selon son type d'équipement
-  vmColor(type: string): string {
-    const map: Record<string, string> = {
-      server: 'purple',
-      nas:    'amber',
-      pbs:    'coral',
-      ha:     'green',
-      gns:    'red',
-    };
-    return map[type] ?? 'gray';
+  // Couleur d'un badge service selon son nom
+  private static readonly SVC_COLORS: Record<string, { bg: string; text: string }> = {
+    'Frigate':              { bg: '#052e16', text: '#4ade80' },
+    'Frigate NVR':         { bg: '#052e16', text: '#4ade80' },
+    'Home Assistant OS':   { bg: '#0c1a2e', text: '#22d3ee' },
+    'Home Assistant':      { bg: '#0c1a2e', text: '#22d3ee' },
+    'Proxmox VE':          { bg: '#1a1a1a', text: '#f97316' },
+    'Proxmox Backup Server': { bg: '#1a1a1a', text: '#fb7185' },
+    'Docker':              { bg: '#0c2233', text: '#38bdf8' },
+    'Portainer':           { bg: '#0c1a10', text: '#34d399' },
+    'Portainer Agent':     { bg: '#0c1a10', text: '#34d399' },
+    'Nginx Proxy Manager': { bg: '#1a1a1a', text: '#94a3b8' },
+    'Authentik':           { bg: '#2d1b69', text: '#c4b5fd' },
+    'WireGuard':           { bg: '#1a2233', text: '#60a5fa' },
+    'TrueNAS':             { bg: '#0a2040', text: '#38bdf8' },
+    'GNS3':                { bg: '#2a0a0a', text: '#f87171' },
+  };
+
+  svcColor(svc: string): { bg: string; text: string } {
+    return DeviceCardComponent.SVC_COLORS[svc] ?? { bg: '#1e293b', text: '#94a3b8' };
   }
+
 }
