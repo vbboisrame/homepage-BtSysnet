@@ -126,7 +126,6 @@ INSERT INTO devices (hostname, type, model, specs, link_type, services, site_id,
   'LIR-TRUENAS-001', 'nas',
   'TrueNAS Scale (VM Proxmox)',
   '7 vCPU · 64 Go RAM',
-  'VM Proxmox · ZFS · iSCSI target · Jumbo frames',
   'rj45',
   'TrueNAS · iSCSI target · Jumbo frames',
   1, NULL, 'active'  -- parent_id sera mis à jour après
@@ -183,7 +182,6 @@ INSERT INTO devices (hostname, type, model, specs, link_type, services, site_id,
   'LIR-DEBDSK-001', 'server',
   'Debian 13 KDE (VM Proxmox)',
   '4 vCPU · 8 Go RAM',
-  'Jump VM · KDE Plasma · RDP via Guacamole',
   'rj45',
   'KDE Plasma · RDP · Jump host',
   1, NULL, 'active'
@@ -247,7 +245,7 @@ INSERT INTO devices (hostname, type, model, specs, link_type, services, site_id,
 UPDATE devices SET parent_id = (SELECT id FROM (SELECT id FROM devices WHERE hostname = 'LIR-PXMPVE-001') t)
 WHERE hostname IN (
   'LIR-TRUENAS-001','LIR-HAOS-001',
-  'LIR-DEBDOCK-001','LIR-DEBDOCK-002','LIR-DEBDOCK-003',
+  'LIR-DEBDOCK-001','LIR-DEBDOCK-002','LIR-DEBDOCK-004',
   'LIR-DEBAUTH-001','LIR-DEBDSK-001','LIR-DEBGNS-001'
 );
 
@@ -340,7 +338,7 @@ SELECT d.id, v.id FROM devices d JOIN vlans v ON v.site_id = d.site_id WHERE d.h
 INSERT INTO device_vlans (device_id, vlan_id)
 SELECT d.id, v.id FROM devices d JOIN vlans v ON v.site_id = d.site_id WHERE d.hostname = 'LIR-DEBDOCK-002' AND v.number = 10;
 INSERT INTO device_vlans (device_id, vlan_id)
-SELECT d.id, v.id FROM devices d JOIN vlans v ON v.site_id = d.site_id WHERE d.hostname = 'LIR-DEBDOCK-003' AND v.number = 10;
+SELECT d.id, v.id FROM devices d JOIN vlans v ON v.site_id = d.site_id WHERE d.hostname = 'LIR-DEBDOCK-004' AND v.number = 10;
 INSERT INTO device_vlans (device_id, vlan_id)
 SELECT d.id, v.id FROM devices d JOIN vlans v ON v.site_id = d.site_id WHERE d.hostname = 'LIR-DEBAUTH-001' AND v.number = 10;
 INSERT INTO device_vlans (device_id, vlan_id)
