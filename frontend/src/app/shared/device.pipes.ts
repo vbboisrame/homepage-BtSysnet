@@ -38,7 +38,7 @@ export class LinkLabelPipe implements PipeTransform {
 
 @Pipe({ name: 'vlanColor', standalone: true })
 export class VlanColorPipe implements PipeTransform {
-  transform(vlanNumber: number): string {
+  transform(vlanNumber: number | undefined): string {
     const colors: Record<number, string> = {
       10: '#a78bfa',
       20: '#fbbf24',
@@ -47,6 +47,6 @@ export class VlanColorPipe implements PipeTransform {
       50: '#2dd4bf',
       60: '#9ca3af',
     };
-    return colors[vlanNumber] ?? '#6b7280';
+    return vlanNumber != null ? (colors[vlanNumber] ?? '#6b7280') : '#4b5563';
   }
 }
