@@ -96,7 +96,7 @@ import { VlanCardComponent } from './vlan-card.component';
       padding: 14px;
       margin-bottom: 16px;
     }
-    .site-lire    { border: 1.5px solid #1d4ed8; }
+    .site-lir     { border: 1.5px solid #1d4ed8; }
     .site-evr     { border: 1.5px solid #4b5563; }
     .site-ns      { border: 1.5px dashed #374151; opacity: 0.6; }
 
@@ -116,12 +116,12 @@ import { VlanCardComponent } from './vlan-card.component';
       border-radius: 4px;
       letter-spacing: 1px;
     }
-    .site-lire .site-badge { background: #1d3a7a; color: #93c5fd; border: 1px solid #1d4ed8; }
+    .site-lir  .site-badge { background: #1d3a7a; color: #93c5fd; border: 1px solid #1d4ed8; }
     .site-evr  .site-badge { background: #1f2937; color: #9ca3af; border: 1px solid #374151; }
     .site-ns   .site-badge { background: #1a2535; color: #9ca3af; border: 1px solid #374151; }
 
     .site-name     { font-size: 13px; font-weight: 600; color: #bfdbfe; }
-    .site-lire .site-name { color: #bfdbfe; }
+    .site-lir  .site-name { color: #bfdbfe; }
     .site-evr  .site-name { color: #6b7280; }
     .site-location { font-size: 11px; color: #4b5563; }
 
