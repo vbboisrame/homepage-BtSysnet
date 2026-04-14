@@ -1,8 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
-import { ApiService } from '../../core/services/api.service';
-import { Site, Device } from '../../core/models/infrastructure.models';
+import { ApiService } from '../../core/api.service';
+import { Site, Device } from '../../core/infrastructure.models';
 import { SitePanelComponent } from '../../shared/components/site-panel.component';
 import { RecapTableComponent } from '../../shared/components/recap-table.component';
 

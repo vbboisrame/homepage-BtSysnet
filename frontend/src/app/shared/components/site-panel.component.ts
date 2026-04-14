@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Site, Device, Vlan } from '../../core/models/infrastructure.models';
-import { ApiService } from '../../core/services/api.service';
+import { Site, Device, Vlan } from '../../core/infrastructure.models';
+import { ApiService } from '../../core/api.service';
 import { DeviceCardComponent } from './device-card.component';
 import { VlanCardComponent } from './vlan-card.component';
 

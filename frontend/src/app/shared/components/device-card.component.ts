@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Device } from '../../core/models/infrastructure.models';
-import { DeviceLabelPipe, LinkLabelPipe } from '../pipes/device.pipes';
+import { Device } from '../../core/infrastructure.models';
+import { DeviceLabelPipe, LinkLabelPipe } from '../device.pipes';
 
 @Component({
   selector: 'app-device-card',

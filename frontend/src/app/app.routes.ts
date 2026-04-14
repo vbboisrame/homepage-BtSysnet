@@ -14,6 +14,6 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/diagram/diagram.component')
         .then(m => m.DiagramComponent),
-    title: 'PROXIMA — Diagramme réseau'
+    title: 'BtSysnet — Diagramme réseau'
   }
 ];

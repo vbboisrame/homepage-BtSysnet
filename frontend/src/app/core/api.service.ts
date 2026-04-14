@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin } from 'rxjs';
-import { Site, Device, Vlan } from '../models/infrastructure.models';
+import { Site, Device, Vlan } from './infrastructure.models';
 
 // @Injectable signifie que ce service peut être injecté
 // dans n'importe quel composant Angular.
@@ -21,10 +21,6 @@ export class ApiService {
 
   getSites(): Observable<Site[]> {
     return this.http.get<Site[]>(`${this.base}/sites`);
-  }
-
-  getSite(id: number): Observable<Site> {
-    return this.http.get<Site>(`${this.base}/sites/${id}`);
   }
 
   // ── Équipements ────────────────────────────────────────────

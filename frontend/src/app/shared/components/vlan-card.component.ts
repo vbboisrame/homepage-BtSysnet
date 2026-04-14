@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Vlan } from '../../core/models/infrastructure.models';
+import { Vlan } from '../../core/infrastructure.models';
 
 @Component({
   selector: 'app-vlan-card',
