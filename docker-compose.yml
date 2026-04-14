@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+
+  # ── Base de données MariaDB ──
+  mariadb:
+    image: mariadb:11.4
+    container_name: proxima-mariadb
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: proxima_infra
+      MYSQL_USER: proxima
+      MYSQL_PASSWORD: proximapassword
+    volumes:
+      - mariadb_data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "3306:3306"
+    networks:
+      - proxima-net
+
+  # ── Backend Express ──
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: proxima-backend
+    restart: unless-stopped
+    environment:
+      DB_HOST: mariadb
+      DB_PORT: 3306
+      DB_USER: proxima
+      DB_PASSWORD: proximapassword
+      DB_NAME: proxima_infra
+      PORT: 3000
+      CORS_ORIGIN: http://localhost:4200
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mariadb
+    networks:
+      - proxima-net
+
+  # ── Frontend Angular (prod) ──
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: proxima-frontend
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    networks:
+      - proxima-net
+
+volumes:
+  mariadb_data:
+
+networks:
+  proxima-net:
+    driver: bridge

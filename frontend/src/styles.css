@@ -1,0 +1,95 @@
+/* ── Reset & Base ── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #0a0e1a;
+  color: #e2e8f0;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  min-width: 1400px;
+}
+
+/* ── Variables CSS globales ── */
+:root {
+  --color-bg:        #0a0e1a;
+  --color-surface:   #0d1525;
+  --color-surface2:  #111827;
+  --color-border:    #1e2d4a;
+  --color-text:      #e2e8f0;
+  --color-muted:     #6b7280;
+  --color-subtle:    #4b5563;
+
+  /* Couleurs par type d'équipement */
+  --color-router:  #2dd4bf;
+  --color-switch:  #38bdf8;
+  --color-server:  #a78bfa;
+  --color-nas:     #fbbf24;
+  --color-pbs:     #fb7185;
+  --color-ha:      #22d3ee;
+  --color-gns:     #f87171;
+  --color-ap:      #34d399;
+
+  /* Couleurs VLAN */
+  --color-v10: #a78bfa;
+  --color-v20: #fbbf24;
+  --color-v30: #fb7185;
+  --color-v40: #4ade80;
+  --color-v50: #2dd4bf;
+  --color-v60: #9ca3af;
+
+  /* Typographie */
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans: 'Inter', sans-serif;
+}
+
+/* ── Utilitaires ── */
+.mono { font-family: var(--font-mono); }
+
+.section-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: #4b6a9c;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  padding-left: 4px;
+  border-left: 2px solid #1d4ed8;
+}
+
+/* ── Tags/Badges ── */
+.tag {
+  display: inline-block;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+}
+.tag-intersite { background: #0a1a3a; color: #60a5fa; border: 1px solid #1d4ed8; }
+.tag-local     { background: #0a2515; color: #4ade80; border: 1px solid #14532d; }
+.tag-mtu       { background: #1a0a0a; color: #fb923c; border: 1px solid #7c2d12; }
+
+/* ── Liens physiques ── */
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+.link-dot { width: 6px; height: 6px; border-radius: 50%; }
+.link-fiber   { background: #1c2e1a; color: #4ade80; border: 1px solid #166534; }
+.link-sfp     { background: #1c2333; color: #60a5fa; border: 1px solid #1e40af; }
+.link-rj45    { background: #1c1c2e; color: #a78bfa; border: 1px solid #4c1d95; }
+.link-rj45-4x { background: #1c1c2e; color: #c084fc; border: 1px solid #6d28d9; }
+.link-fiber   .link-dot   { background: #4ade80; }
+.link-sfp     .link-dot   { background: #60a5fa; }
+.link-rj45    .link-dot   { background: #a78bfa; }
+.link-rj45-4x .link-dot   { background: #c084fc; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #0a0e1a; }
+::-webkit-scrollbar-thumb { background: #1e2d4a; border-radius: 3px; }
