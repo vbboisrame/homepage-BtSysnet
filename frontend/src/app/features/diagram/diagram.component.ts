@@ -2,14 +2,15 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { ApiService } from '../../core/api.service';
-import { Site, Device } from '../../core/infrastructure.models';
+import { Site, Device, Vlan } from '../../core/infrastructure.models';
 import { SitePanelComponent } from '../../shared/components/site-panel.component';
 import { RecapTableComponent } from '../../shared/components/recap-table.component';
+import { VlanCardComponent } from '../../shared/components/vlan-card.component';
 
 @Component({
   selector: 'app-diagram',
   standalone: true,
-  imports: [CommonModule, SitePanelComponent, RecapTableComponent],
+  imports: [CommonModule, SitePanelComponent, RecapTableComponent, VlanCardComponent],
   template: `
     <!-- WireGuard bridge inter-sites -->
     @if (activeSites.length >= 2) {
@@ -52,9 +53,28 @@ import { RecapTableComponent } from '../../shared/components/recap-table.compone
     @if (!loading && !error) {
       <div class="main-grid">
         @for (site of activeSites; track site.id) {
-          <app-site-panel [site]="site" />
+          <app-site-panel [site]="site" (vlansLoaded)="onVlansLoaded($event)" />
         }
       </div>
+
+      <!-- Plans d'adressage VLAN -->
+      @if (vlansData.length > 0) {
+        <div class="vlan-section-global">
+          @for (entry of vlansData; track entry.site.id) {
+            <div class="vlan-site-block">
+              <div class="vlan-site-title">
+                <span class="vlan-site-badge site-badge-{{ entry.site.code.toLowerCase() }}">{{ entry.site.code }}</span>
+                Plan d'adressage VLAN — {{ entry.site.name }}
+              </div>
+              <div class="vlan-grid">
+                @for (vlan of entry.vlans; track vlan.id) {
+                  <app-vlan-card [vlan]="vlan" />
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
 
       <!-- Tableau récapitulatif -->
       <app-recap-table [devices]="allDevices" />
@@ -164,6 +184,49 @@ import { RecapTableComponent } from '../../shared/components/recap-table.compone
       margin-bottom: 16px;
     }
 
+    /* Plans d'adressage VLAN */
+    .vlan-section-global {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .vlan-site-block {
+      background: #0d1525;
+      border-radius: 10px;
+      padding: 14px;
+      border: 1px solid #1e2d4a;
+    }
+    .vlan-site-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #1e2d4a;
+    }
+    .vlan-site-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 4px;
+      letter-spacing: 1px;
+    }
+    .site-badge-lir { background: #1d3a7a; color: #93c5fd; border: 1px solid #1d4ed8; }
+    .site-badge-evr { background: #1f2937; color: #9ca3af; border: 1px solid #374151; }
+    .vlan-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 6px;
+    }
+
     /* États globaux */
     .global-loading {
       display: flex;
@@ -247,11 +310,27 @@ export class DiagramComponent implements OnInit {
 
   sites: Site[]     = [];
   allDevices: Device[] = [];
+  vlansData: { site: Site; vlans: Vlan[] }[] = [];
   loading = true;
   error: string | null = null;
 
   get activeSites(): Site[] {
     return this.sites.filter(s => s.status === 'active');
+  }
+
+  onVlansLoaded(event: { site: Site; vlans: Vlan[] }): void {
+    // Remplace l'entrée si elle existe déjà (rechargement), sinon ajoute
+    const idx = this.vlansData.findIndex(e => e.site.id === event.site.id);
+    if (idx >= 0) {
+      this.vlansData[idx] = event;
+    } else {
+      this.vlansData.push(event);
+    }
+    // Trie dans le même ordre que les sites actifs
+    this.vlansData.sort((a, b) =>
+      this.activeSites.findIndex(s => s.id === a.site.id) -
+      this.activeSites.findIndex(s => s.id === b.site.id)
+    );
   }
 
   ngOnInit(): void {

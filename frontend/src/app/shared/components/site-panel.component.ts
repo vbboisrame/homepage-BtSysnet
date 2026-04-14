@@ -1,14 +1,13 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Site, Device, Vlan } from '../../core/infrastructure.models';
 import { ApiService } from '../../core/api.service';
 import { DeviceCardComponent } from './device-card.component';
-import { VlanCardComponent } from './vlan-card.component';
 
 @Component({
   selector: 'app-site-panel',
   standalone: true,
-  imports: [CommonModule, DeviceCardComponent, VlanCardComponent],
+  imports: [CommonModule, DeviceCardComponent],
   template: `
     <!-- Panneau d'un site -->
     <div class="site" [ngClass]="siteClass">
@@ -74,18 +73,6 @@ import { VlanCardComponent } from './vlan-card.component';
           </div>
         }
 
-        <!-- Plan d'adressage VLAN -->
-        @if (vlans.length > 0) {
-          <div class="vlan-section">
-            <div class="section-title">Plan d'adressage VLAN {{ site.name }}</div>
-            <div class="vlan-grid">
-              @for (vlan of vlans; track vlan.id) {
-                <app-vlan-card [vlan]="vlan" />
-              }
-            </div>
-          </div>
-        }
-
       }
     </div>
   `,
@@ -132,13 +119,6 @@ import { VlanCardComponent } from './vlan-card.component';
       margin-bottom: 8px;
     }
 
-    .vlan-section { margin-top: 12px; }
-    .vlan-grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 6px;
-    }
-
     /* Chargement */
     .loading {
       display: flex;
@@ -170,11 +150,11 @@ import { VlanCardComponent } from './vlan-card.component';
 export class SitePanelComponent implements OnInit {
 
   @Input({ required: true }) site!: Site;
+  @Output() vlansLoaded = new EventEmitter<{ site: Site; vlans: Vlan[] }>();
 
   private api = inject(ApiService);
 
   devices: Device[] = [];
-  vlans: Vlan[]     = [];
   loading = true;
   error: string | null = null;
 
@@ -204,7 +184,7 @@ export class SitePanelComponent implements OnInit {
     this.api.getSiteDiagram(this.site.id).subscribe({
       next: ({ devices, vlans }) => {
         this.devices = devices;
-        this.vlans   = vlans;
+        this.vlansLoaded.emit({ site: this.site, vlans });
         this.loading = false;
       },
       error: (err) => {

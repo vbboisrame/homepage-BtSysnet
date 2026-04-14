@@ -67,9 +67,9 @@ CREATE TABLE IF NOT EXISTS device_vlans (
 -- ── Données : Sites ─────────────────────────────────────────
 
 INSERT INTO sites (code, name, location, status, wg_ip) VALUES
-  ('LIR', 'Liré',           'Maine-et-Loire (49)', 'active',      '10.0.0.1'),
-  ('EVR', 'Évrunes',        'Maine-et-Loire (49)', 'active',      '10.0.0.2'),
-  ('NS',  'Nantes Saverne', 'Loire-Atlantique (44)','placeholder', NULL);
+  ('LIR', 'Liré',           'Maine-et-Loire (49)', 'active',      '10.255.255.1'),
+  ('EVR', 'Évrunes',        'Maine-et-Loire (49)', 'active',      '10.255.255.2'),
+  ('NS',  'Nantes Saverne', 'Loire-Atlantique (44)', 'inactive',  '10.255.255.3');
 
 -- ── Données : Équipements Liré ───────────────────────────────
 
@@ -179,6 +179,14 @@ INSERT INTO devices (hostname, type, model, specs, link_type, services, site_id,
   1, NULL, 'active'
 ),
 (
+  'LIR-DEBDSK-001', 'server',
+  'Debian 13 KDE (VM Proxmox)',
+  'Jump VM · KDE Plasma · RDP via Guacamole',
+  'rj45',
+  'KDE Plasma · RDP · Jump host',
+  1, NULL, 'active'
+),
+(
   'LIR-DEBGNS-001', 'gns',
   'Debian 12 (VM Proxmox)',
   '8 vCPU · 16 Go RAM',
@@ -229,15 +237,8 @@ INSERT INTO devices (hostname, type, model, specs, link_type, services, site_id,
   'rj45',
   'À venir · même config que Liré',
   2, NULL, 'planned'
-),
-(
-  'EVR-DEBDSK-001', 'server',
-  'Debian 13 KDE (VM Proxmox)',
-  'Jump VM · KDE Plasma · RDP via Guacamole',
-  'rj45',
-  'KDE Plasma · RDP · Jump host',
-  2, NULL, 'active'
 );
+
 
 -- ── Mise à jour des parent_id (VMs Proxmox) ─────────────────
 
