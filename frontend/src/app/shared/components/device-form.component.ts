@@ -28,6 +28,7 @@ import { Device, DeviceType, LinkType, Site } from '../../core/infrastructure.mo
           <option value="router">Routeur</option>
           <option value="switch">Switch</option>
           <option value="server">Serveur / VM</option>
+          <option value="hypervisor">Hyperviseur (Proxmox…)</option>
           <option value="nas">NAS / Stockage</option>
           <option value="pbs">Backup Server</option>
           <option value="ha">Domotique (HA)</option>
@@ -215,7 +216,7 @@ export class DeviceFormComponent implements OnInit {
 
   private loadServers(siteId: number): void {
     this.api.getDevicesBySite(siteId).subscribe(devices => {
-      this.serverDevices = devices.filter(d => d.type === 'server');
+      this.serverDevices = devices.filter(d => d.type === 'server' || d.type === 'hypervisor');
     });
   }
 

@@ -111,14 +111,15 @@ import { ApiService } from '../../core/api.service';
       background: #111827; border-radius: 6px; padding: 8px 10px;
       flex: 1; border: 1px solid #374151;
     }
-    .device-router  { border-color: #0f766e; }
-    .device-switch  { border-color: #0369a1; }
-    .device-server  { border-color: #6d28d9; }
-    .device-nas     { border-color: #b45309; }
-    .device-pbs     { border-color: #be123c; }
-    .device-ha      { border-color: #0891b2; }
-    .device-gns     { border-color: #dc2626; }
-    .device-ap      { border-color: #065f46; }
+    .device-router      { border-color: #0f766e; }
+    .device-switch      { border-color: #0369a1; }
+    .device-server      { border-color: #6d28d9; }
+    .device-hypervisor  { border-color: #c2410c; }
+    .device-nas         { border-color: #b45309; }
+    .device-pbs         { border-color: #be123c; }
+    .device-ha          { border-color: #0891b2; }
+    .device-gns         { border-color: #dc2626; }
+    .device-ap          { border-color: #065f46; }
     .device-placeholder { border: 1px dashed #374151; opacity: 0.5; }
 
     /* En-tête avec boutons admin */
@@ -133,11 +134,12 @@ import { ApiService } from '../../core/api.service';
     .device:hover .admin-btns,
     .admin-btns.confirming { opacity: 1; }
     .btn-edit, .btn-delete {
-      background: none; border: none; cursor: pointer;
-      font-size: 10px; padding: 1px 3px; border-radius: 3px; line-height: 1;
+      background: #1a2236; border: 1px solid #2a3a55; cursor: pointer;
+      font-size: 10px; padding: 2px 5px; border-radius: 3px; line-height: 1;
+      color: #94a3b8;
     }
-    .btn-edit:hover  { background: #1e2d4a; }
-    .btn-delete:hover { background: #2d1010; }
+    .btn-edit:hover  { background: #1e2d4a; border-color: #3b82f6; color: #60a5fa; }
+    .btn-delete:hover { background: #2d1010; border-color: #7f1d1d; color: #fca5a5; }
     .btn-delete-confirm {
       background: #7f1d1d; border: none; border-radius: 3px;
       color: #fca5a5; font-family: 'JetBrains Mono', monospace; font-size: 8px;
@@ -154,14 +156,15 @@ import { ApiService } from '../../core/api.service';
       font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700;
       letter-spacing: 0.5px;
     }
-    .device-router  .device-title { color: #2dd4bf; }
-    .device-switch  .device-title { color: #38bdf8; }
-    .device-server  .device-title { color: #a78bfa; }
-    .device-nas     .device-title { color: #fbbf24; }
-    .device-pbs     .device-title { color: #fb7185; }
-    .device-ha      .device-title { color: #22d3ee; }
-    .device-gns     .device-title { color: #f87171; }
-    .device-ap      .device-title { color: #34d399; }
+    .device-router      .device-title { color: #2dd4bf; }
+    .device-switch      .device-title { color: #38bdf8; }
+    .device-server      .device-title { color: #a78bfa; }
+    .device-hypervisor  .device-title { color: #fb923c; }
+    .device-nas         .device-title { color: #fbbf24; }
+    .device-pbs         .device-title { color: #fb7185; }
+    .device-ha          .device-title { color: #22d3ee; }
+    .device-gns         .device-title { color: #f87171; }
+    .device-ap          .device-title { color: #34d399; }
 
     .device-model { font-size: 10px; color: #6b7280; margin-bottom: 4px; font-family: 'JetBrains Mono', monospace; }
     .device-specs { font-size: 10px; color: #4b5563; margin-bottom: 6px; line-height: 1.5; }
@@ -193,10 +196,10 @@ import { ApiService } from '../../core/api.service';
     .vm:hover .admin-btns-sm,
     .admin-btns-sm.confirming { opacity: 1; }
     .btn-edit-sm {
-      background: none; border: none; cursor: pointer;
-      font-size: 9px; padding: 0 2px; border-radius: 2px;
+      background: #1a2236; border: 1px solid #2a3a55; cursor: pointer;
+      font-size: 9px; padding: 1px 3px; border-radius: 2px; color: #94a3b8;
     }
-    .btn-edit-sm:hover { background: #1e2d4a; }
+    .btn-edit-sm:hover { background: #1e2d4a; border-color: #3b82f6; color: #60a5fa; }
     .vm-name { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 600; margin-bottom: 3px; }
     .vm-model { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: #4b5563; margin-bottom: 2px; }
     .vm-specs  { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #6b7280; margin-bottom: 4px; }

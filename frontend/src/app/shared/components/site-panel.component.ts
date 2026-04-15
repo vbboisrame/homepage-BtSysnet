@@ -159,7 +159,7 @@ export class SitePanelComponent implements OnInit, OnDestroy {
 
   get networkDevices(): Device[] { return this.devices.filter(d => ['router', 'switch'].includes(d.type)); }
   get apDevices():      Device[] { return this.devices.filter(d => d.type === 'ap'); }
-  get serverDevices():  Device[] { return this.devices.filter(d => d.type === 'server' && !d.parent_id); }
+  get serverDevices():  Device[] { return this.devices.filter(d => (d.type === 'server' || d.type === 'hypervisor') && !d.parent_id); }
   get storageDevices(): Device[] { return this.devices.filter(d => ['nas', 'pbs', 'ha', 'gns'].includes(d.type)); }
 
   get siteClass(): string { return 'site-' + this.site.code.toLowerCase().substring(0, 3); }

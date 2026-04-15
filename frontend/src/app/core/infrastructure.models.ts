@@ -12,7 +12,7 @@ export interface Site {
 }
 
 export type DeviceType =
-  | 'router' | 'switch' | 'server' | 'nas'
+  | 'router' | 'switch' | 'server' | 'hypervisor' | 'nas'
   | 'pbs' | 'ha' | 'gns' | 'ap' | 'placeholder';
 
 export type LinkType = 'fiber' | 'sfp' | 'rj45' | 'rj45-4x';

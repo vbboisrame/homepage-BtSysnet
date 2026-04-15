@@ -12,7 +12,7 @@ export interface Site {
 export interface Device {
   id: number;
   hostname: string;
-  type: 'router' | 'switch' | 'server' | 'nas' | 'pbs' | 'ha' | 'gns' | 'ap' | 'placeholder';
+  type: 'router' | 'switch' | 'server' | 'hypervisor' | 'nas' | 'pbs' | 'ha' | 'gns' | 'ap' | 'placeholder';
   model: string | null;
   specs: string | null;
   link_type: 'fiber' | 'sfp' | 'rj45' | 'rj45-4x';
