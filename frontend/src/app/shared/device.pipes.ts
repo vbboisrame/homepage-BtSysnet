@@ -12,6 +12,7 @@ export class DeviceLabelPipe implements PipeTransform {
       router:      'Routeur',
       switch:      'Switch',
       server:      'Serveur / VM',
+      hypervisor:  'Hyperviseur',
       nas:         'NAS / Stockage',
       pbs:         'Backup Server',
       ha:          'Domotique',
