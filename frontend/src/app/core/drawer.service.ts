@@ -9,7 +9,7 @@ export interface DrawerState {
   entity?:  DrawerEntity;
   mode?:    DrawerMode;
   data?:    any;
-  context?: { siteId?: number };
+  context?: { siteId?: number; parentId?: number };
 }
 
 @Injectable({ providedIn: 'root' })
@@ -20,7 +20,7 @@ export class DrawerService {
   // Émis après chaque sauvegarde réussie — les composants s'y abonnent pour recharger
   readonly saved$ = new Subject<DrawerEntity>();
 
-  open(entity: DrawerEntity, mode: DrawerMode, data?: any, context?: { siteId?: number }): void {
+  open(entity: DrawerEntity, mode: DrawerMode, data?: any, context?: { siteId?: number; parentId?: number }): void {
     this.state.set({ open: true, entity, mode, data, context });
   }
 

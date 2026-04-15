@@ -117,12 +117,12 @@ import { SiteFormComponent } from './shared/components/site-form.component';
 
     /* Boutons header */
     .btn-admin {
-      background: none; border: 1px solid #1e3a5f;
-      border-radius: 5px; padding: 5px 12px;
-      color: #4b6a9c; font-family: 'JetBrains Mono', monospace; font-size: 10px;
+      background: #0d1e35; border: 1px solid #3b82f6;
+      border-radius: 5px; padding: 5px 14px;
+      color: #60a5fa; font-family: 'JetBrains Mono', monospace; font-size: 10px;
       cursor: pointer; letter-spacing: 1px;
     }
-    .btn-admin:hover { border-color: #3b82f6; color: #60a5fa; background: #0d1e35; }
+    .btn-admin:hover { background: #1e3a5f; color: #93c5fd; }
 
     .btn-logout {
       background: none; border: 1px solid #374151;

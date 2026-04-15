@@ -59,6 +59,9 @@ import { ApiService } from '../../core/api.service';
       @if (device.children && device.children.length > 0) {
         <div class="vms">
           <div class="vms-title">VMs / Conteneurs</div>
+          @if (auth.isLoggedIn() && (device.type === 'server' || device.type === 'nas')) {
+            <button class="btn-add-vm" (click)="addVm()">+ VM</button>
+          }
           <div class="vm-row">
             @for (vm of device.children; track vm.id) {
               <div class="vm" [style.border-left-color]="vm.vlans?.[0] | vlanColor">
@@ -67,6 +70,12 @@ import { ApiService } from '../../core/api.service';
                   @if (auth.isLoggedIn()) {
                     <div class="admin-btns-sm">
                       <button class="btn-edit-sm" (click)="editVm(vm)" title="Modifier">✏</button>
+                      @if (confirmingDeleteVmId !== vm.id) {
+                        <button class="btn-delete-sm" (click)="confirmingDeleteVmId = vm.id" title="Supprimer">🗑</button>
+                      } @else {
+                        <button class="btn-delete-confirm-sm" (click)="deleteVm(vm)">Oui</button>
+                        <button class="btn-delete-cancel-sm" (click)="confirmingDeleteVmId = null">Non</button>
+                      }
                     </div>
                   }
                 </div>
@@ -90,6 +99,10 @@ import { ApiService } from '../../core/api.service';
             }
           </div>
         </div>
+      }
+
+      @if (auth.isLoggedIn() && !device.parent_id && (device.type === 'server' || device.type === 'nas') && (!device.children || device.children.length === 0)) {
+        <button class="btn-add-vm" (click)="addVm()">+ VM</button>
       }
     </div>
   `,
@@ -190,6 +203,29 @@ import { ApiService } from '../../core/api.service';
       font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 700;
       padding: 1px 5px; border-radius: 3px; color: #fff; opacity: 0.85;
     }
+    .btn-delete-sm {
+      background: none; border: none; cursor: pointer;
+      font-size: 9px; padding: 0 2px; border-radius: 2px;
+    }
+    .btn-delete-sm:hover { background: #2d1010; }
+    .btn-delete-confirm-sm {
+      background: #7f1d1d; border: none; border-radius: 3px;
+      color: #fca5a5; font-family: 'JetBrains Mono', monospace; font-size: 8px;
+      padding: 1px 4px; cursor: pointer;
+    }
+    .btn-delete-confirm-sm:hover { background: #991b1b; }
+    .btn-delete-cancel-sm {
+      background: #1f2937; border: none; border-radius: 3px;
+      color: #9ca3af; font-family: 'JetBrains Mono', monospace; font-size: 8px;
+      padding: 1px 4px; cursor: pointer;
+    }
+    .btn-add-vm {
+      background: none; border: 1px dashed #1e3a5f;
+      border-radius: 4px; padding: 2px 8px; margin-bottom: 4px;
+      color: #4b6a9c; font-family: 'JetBrains Mono', monospace; font-size: 8px;
+      cursor: pointer; width: 100%;
+    }
+    .btn-add-vm:hover { border-color: #3b82f6; color: #60a5fa; background: #0d1e35; }
   `]
 })
 export class DeviceCardComponent {
@@ -201,6 +237,7 @@ export class DeviceCardComponent {
   private api     = inject(ApiService);
 
   confirmingDelete = false;
+  confirmingDeleteVmId: number | null = null;
 
   get serviceList(): string[] {
     return this.device.services ? this.device.services.split(' · ').map(s => s.trim()) : [];
@@ -223,6 +260,17 @@ export class DeviceCardComponent {
       next: () => this.drawer.notifySaved('device'),
       error: () => { this.confirmingDelete = false; }
     });
+  }
+
+  deleteVm(vm: Device): void {
+    this.api.deleteDevice(vm.id).subscribe({
+      next: () => this.drawer.notifySaved('device'),
+      error: () => { this.confirmingDeleteVmId = null; }
+    });
+  }
+
+  addVm(): void {
+    this.drawer.open('device', 'create', null, { siteId: this.device.site_id, parentId: this.device.id });
   }
 
   private static readonly SVC_COLORS: Record<string, { bg: string; text: string }> = {

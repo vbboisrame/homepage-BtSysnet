@@ -162,7 +162,7 @@ export class DeviceFormComponent implements OnInit {
 
   data    = input<Device | null>(null);
   mode    = input<'create' | 'edit'>('create');
-  context = input<{ siteId?: number }>({});
+  context = input<{ siteId?: number; parentId?: number }>({});
 
   private api = inject(ApiService);
   drawer = inject(DrawerService);
@@ -188,7 +188,8 @@ export class DeviceFormComponent implements OnInit {
     this.api.getSites().subscribe(sites => {
       this.sites = sites;
       const siteId = this.data()?.site_id ?? this.context().siteId ?? sites[0]?.id ?? null;
-      this.form.patchValue({ site_id: siteId });
+      const parentId = this.data()?.parent_id ?? this.context().parentId ?? null;
+      this.form.patchValue({ site_id: siteId, parent_id: parentId });
       if (siteId) this.loadServers(siteId);
     });
 
