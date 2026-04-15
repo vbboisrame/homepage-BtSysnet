@@ -129,17 +129,13 @@ import { ApiService } from '../../core/api.service';
     }
     .admin-btns {
       display: flex; gap: 2px; flex-shrink: 0;
-      opacity: 0; transition: opacity 0.15s;
     }
-    .device:hover .admin-btns,
-    .admin-btns.confirming { opacity: 1; }
     .btn-edit, .btn-delete {
-      background: #1a2236; border: 1px solid #2a3a55; cursor: pointer;
-      font-size: 10px; padding: 2px 5px; border-radius: 3px; line-height: 1;
-      color: #94a3b8;
+      background: #1e2d4a; border: 1px solid #3b4f6e; cursor: pointer;
+      font-size: 11px; padding: 2px 6px; border-radius: 3px; line-height: 1;
     }
-    .btn-edit:hover  { background: #1e2d4a; border-color: #3b82f6; color: #60a5fa; }
-    .btn-delete:hover { background: #2d1010; border-color: #7f1d1d; color: #fca5a5; }
+    .btn-edit:hover  { background: #1e3a6a; border-color: #3b82f6; }
+    .btn-delete:hover { background: #3d1414; border-color: #9b1c1c; }
     .btn-delete-confirm {
       background: #7f1d1d; border: none; border-radius: 3px;
       color: #fca5a5; font-family: 'JetBrains Mono', monospace; font-size: 8px;
@@ -192,14 +188,12 @@ import { ApiService } from '../../core/api.service';
       border-left: 2px solid #4b5563; min-width: 120px;
     }
     .vm-head { display: flex; align-items: flex-start; justify-content: space-between; }
-    .admin-btns-sm { opacity: 0; transition: opacity 0.15s; }
-    .vm:hover .admin-btns-sm,
-    .admin-btns-sm.confirming { opacity: 1; }
+    .admin-btns-sm { display: flex; gap: 2px; }
     .btn-edit-sm {
-      background: #1a2236; border: 1px solid #2a3a55; cursor: pointer;
-      font-size: 9px; padding: 1px 3px; border-radius: 2px; color: #94a3b8;
+      background: #1e2d4a; border: 1px solid #3b4f6e; cursor: pointer;
+      font-size: 10px; padding: 1px 4px; border-radius: 2px;
     }
-    .btn-edit-sm:hover { background: #1e2d4a; border-color: #3b82f6; color: #60a5fa; }
+    .btn-edit-sm:hover { background: #1e3a6a; border-color: #3b82f6; }
     .vm-name { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 600; margin-bottom: 3px; }
     .vm-model { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: #4b5563; margin-bottom: 2px; }
     .vm-specs  { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #6b7280; margin-bottom: 4px; }

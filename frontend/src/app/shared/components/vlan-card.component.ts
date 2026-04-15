@@ -78,16 +78,14 @@ import { ApiService } from '../../core/api.service';
     .header-right { display: flex; align-items: center; gap: 4px; }
     .badges { display: flex; gap: 3px; flex-wrap: wrap; }
 
-    /* Boutons admin (visibles au hover) */
-    .admin-btns { display: flex; gap: 2px; opacity: 0; transition: opacity 0.15s; }
-    .vlan-card:hover .admin-btns,
-    .admin-btns.confirming { opacity: 1; }
+    /* Boutons admin */
+    .admin-btns { display: flex; gap: 2px; }
     .btn-edit, .btn-delete {
-      background: none; border: none; cursor: pointer;
-      font-size: 9px; padding: 1px 2px; border-radius: 2px; line-height: 1;
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
+      cursor: pointer; font-size: 10px; padding: 1px 4px; border-radius: 2px; line-height: 1;
     }
-    .btn-edit:hover  { background: rgba(255,255,255,0.1); }
-    .btn-delete:hover { background: rgba(255,0,0,0.2); }
+    .btn-edit:hover  { background: rgba(59,130,246,0.3); border-color: #3b82f6; }
+    .btn-delete:hover { background: rgba(239,68,68,0.3); border-color: #ef4444; }
     .btn-delete-confirm {
       background: #7f1d1d; border: none; border-radius: 2px;
       color: #fca5a5; font-family: 'JetBrains Mono', monospace; font-size: 7px;
