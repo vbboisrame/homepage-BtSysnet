@@ -130,12 +130,16 @@ import { ApiService } from '../../core/api.service';
     .admin-btns {
       display: flex; gap: 2px; flex-shrink: 0;
     }
-    .btn-edit, .btn-delete {
+    .btn-edit {
       background: #1e2d4a; border: 1px solid #3b4f6e; cursor: pointer;
       font-size: 11px; padding: 2px 6px; border-radius: 3px; line-height: 1;
     }
-    .btn-edit:hover  { background: #1e3a6a; border-color: #3b82f6; }
-    .btn-delete:hover { background: #3d1414; border-color: #9b1c1c; }
+    .btn-edit:hover { background: #1e3a6a; border-color: #3b82f6; }
+    .btn-delete {
+      background: #3d1414; border: 1px solid #7f1d1d; cursor: pointer;
+      font-size: 11px; padding: 2px 6px; border-radius: 3px; line-height: 1;
+    }
+    .btn-delete:hover { background: #5a1a1a; border-color: #ef4444; }
     .btn-delete-confirm {
       background: #7f1d1d; border: none; border-radius: 3px;
       color: #fca5a5; font-family: 'JetBrains Mono', monospace; font-size: 8px;
@@ -203,10 +207,10 @@ import { ApiService } from '../../core/api.service';
       padding: 1px 5px; border-radius: 3px; color: #fff; opacity: 0.85;
     }
     .btn-delete-sm {
-      background: none; border: none; cursor: pointer;
-      font-size: 9px; padding: 0 2px; border-radius: 2px;
+      background: #3d1414; border: 1px solid #7f1d1d; cursor: pointer;
+      font-size: 10px; padding: 1px 4px; border-radius: 2px;
     }
-    .btn-delete-sm:hover { background: #2d1010; }
+    .btn-delete-sm:hover { background: #5a1a1a; border-color: #ef4444; }
     .btn-delete-confirm-sm {
       background: #7f1d1d; border: none; border-radius: 3px;
       color: #fca5a5; font-family: 'JetBrains Mono', monospace; font-size: 8px;

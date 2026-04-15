@@ -80,12 +80,16 @@ import { ApiService } from '../../core/api.service';
 
     /* Boutons admin */
     .admin-btns { display: flex; gap: 2px; }
-    .btn-edit, .btn-delete {
+    .btn-edit {
       background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
       cursor: pointer; font-size: 10px; padding: 1px 4px; border-radius: 2px; line-height: 1;
     }
-    .btn-edit:hover  { background: rgba(59,130,246,0.3); border-color: #3b82f6; }
-    .btn-delete:hover { background: rgba(239,68,68,0.3); border-color: #ef4444; }
+    .btn-edit:hover { background: rgba(59,130,246,0.3); border-color: #3b82f6; }
+    .btn-delete {
+      background: rgba(127,29,29,0.6); border: 1px solid #7f1d1d;
+      cursor: pointer; font-size: 10px; padding: 1px 4px; border-radius: 2px; line-height: 1;
+    }
+    .btn-delete:hover { background: rgba(239,68,68,0.4); border-color: #ef4444; }
     .btn-delete-confirm {
       background: #7f1d1d; border: none; border-radius: 2px;
       color: #fca5a5; font-family: 'JetBrains Mono', monospace; font-size: 7px;
