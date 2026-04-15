@@ -22,7 +22,7 @@ import { ApiService } from '../../core/api.service';
             @if (vlan.mtu === 9000)         { <span class="vlan-badge tag-mtu">MTU 9000</span> }
           </div>
           @if (auth.isLoggedIn()) {
-            <div class="admin-btns">
+            <div class="admin-btns" [class.confirming]="confirmingDelete">
               <button class="btn-edit" (click)="edit()" title="Modifier">✏</button>
               @if (!confirmingDelete) {
                 <button class="btn-delete" (click)="confirmingDelete = true" title="Supprimer">🗑</button>
@@ -80,7 +80,8 @@ import { ApiService } from '../../core/api.service';
 
     /* Boutons admin (visibles au hover) */
     .admin-btns { display: flex; gap: 2px; opacity: 0; transition: opacity 0.15s; }
-    .vlan-card:hover .admin-btns { opacity: 1; }
+    .vlan-card:hover .admin-btns,
+    .admin-btns.confirming { opacity: 1; }
     .btn-edit, .btn-delete {
       background: none; border: none; cursor: pointer;
       font-size: 9px; padding: 1px 2px; border-radius: 2px; line-height: 1;
@@ -131,7 +132,10 @@ export class VlanCardComponent {
   deleteVlan(): void {
     this.api.deleteVlan(this.vlan.id).subscribe({
       next: () => this.drawer.notifySaved('vlan'),
-      error: () => { this.confirmingDelete = false; }
+      error: (err) => {
+        this.confirmingDelete = false;
+        alert(err?.error?.error ?? 'Erreur lors de la suppression');
+      }
     });
   }
 }

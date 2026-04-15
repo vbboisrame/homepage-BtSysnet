@@ -18,7 +18,7 @@ import { ApiService } from '../../core/api.service';
       <div class="device-head">
         <div class="device-title">{{ device.hostname }}</div>
         @if (auth.isLoggedIn()) {
-          <div class="admin-btns">
+          <div class="admin-btns" [class.confirming]="confirmingDelete">
             <button class="btn-edit" (click)="edit()" title="Modifier">✏</button>
             @if (!confirmingDelete) {
               <button class="btn-delete" (click)="confirmingDelete = true" title="Supprimer">🗑</button>
@@ -68,7 +68,7 @@ import { ApiService } from '../../core/api.service';
                 <div class="vm-head">
                   <div class="vm-name" [style.color]="vm.vlans?.[0] | vlanColor">{{ vm.hostname }}</div>
                   @if (auth.isLoggedIn()) {
-                    <div class="admin-btns-sm">
+                    <div class="admin-btns-sm" [class.confirming]="confirmingDeleteVmId === vm.id">
                       <button class="btn-edit-sm" (click)="editVm(vm)" title="Modifier">✏</button>
                       @if (confirmingDeleteVmId !== vm.id) {
                         <button class="btn-delete-sm" (click)="confirmingDeleteVmId = vm.id" title="Supprimer">🗑</button>
@@ -130,7 +130,8 @@ import { ApiService } from '../../core/api.service';
       display: flex; gap: 2px; flex-shrink: 0;
       opacity: 0; transition: opacity 0.15s;
     }
-    .device:hover .admin-btns { opacity: 1; }
+    .device:hover .admin-btns,
+    .admin-btns.confirming { opacity: 1; }
     .btn-edit, .btn-delete {
       background: none; border: none; cursor: pointer;
       font-size: 10px; padding: 1px 3px; border-radius: 3px; line-height: 1;
@@ -189,7 +190,8 @@ import { ApiService } from '../../core/api.service';
     }
     .vm-head { display: flex; align-items: flex-start; justify-content: space-between; }
     .admin-btns-sm { opacity: 0; transition: opacity 0.15s; }
-    .vm:hover .admin-btns-sm { opacity: 1; }
+    .vm:hover .admin-btns-sm,
+    .admin-btns-sm.confirming { opacity: 1; }
     .btn-edit-sm {
       background: none; border: none; cursor: pointer;
       font-size: 9px; padding: 0 2px; border-radius: 2px;
@@ -258,14 +260,20 @@ export class DeviceCardComponent {
   deleteDevice(): void {
     this.api.deleteDevice(this.device.id).subscribe({
       next: () => this.drawer.notifySaved('device'),
-      error: () => { this.confirmingDelete = false; }
+      error: (err) => {
+        this.confirmingDelete = false;
+        alert(err?.error?.error ?? 'Erreur lors de la suppression');
+      }
     });
   }
 
   deleteVm(vm: Device): void {
     this.api.deleteDevice(vm.id).subscribe({
       next: () => this.drawer.notifySaved('device'),
-      error: () => { this.confirmingDeleteVmId = null; }
+      error: (err) => {
+        this.confirmingDeleteVmId = null;
+        alert(err?.error?.error ?? 'Erreur lors de la suppression');
+      }
     });
   }
 
