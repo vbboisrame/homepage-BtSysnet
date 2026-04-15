@@ -1,7 +1,9 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { ApiService } from '../../core/api.service';
+import { AuthService } from '../../core/auth.service';
+import { DrawerService } from '../../core/drawer.service';
 import { Site, Device, Vlan } from '../../core/infrastructure.models';
 import { SitePanelComponent } from '../../shared/components/site-panel.component';
 import { RecapTableComponent } from '../../shared/components/recap-table.component';
@@ -56,6 +58,12 @@ import { VlanCardComponent } from '../../shared/components/vlan-card.component';
           <app-site-panel [site]="site" (vlansLoaded)="onVlansLoaded($event)" />
         }
       </div>
+
+      @if (auth.isLoggedIn()) {
+        <div class="add-site-bar">
+          <button class="btn-add-site" (click)="addSite()">+ Nouveau site</button>
+        </div>
+      }
 
       <!-- Plans d'adressage VLAN -->
       @if (vlansData.length > 0) {
@@ -183,6 +191,23 @@ import { VlanCardComponent } from '../../shared/components/vlan-card.component';
       gap: 16px;
       margin-bottom: 16px;
     }
+    .add-site-bar {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+    .btn-add-site {
+      background: none;
+      border: 1px dashed #1e3a5f;
+      border-radius: 6px;
+      padding: 7px 24px;
+      color: #4b6a9c;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      cursor: pointer;
+      letter-spacing: 1px;
+    }
+    .btn-add-site:hover { background: #0d1e35; color: #60a5fa; border-color: #3b82f6; }
 
     /* Plans d'adressage VLAN */
     .vlan-section-global {
@@ -304,43 +329,58 @@ import { VlanCardComponent } from '../../shared/components/vlan-card.component';
     }
   `]
 })
-export class DiagramComponent implements OnInit {
+export class DiagramComponent implements OnInit, OnDestroy {
 
-  private api = inject(ApiService);
+  private api    = inject(ApiService);
+  auth           = inject(AuthService);
+  private drawer = inject(DrawerService);
 
-  sites: Site[]     = [];
+  sites: Site[]        = [];
   allDevices: Device[] = [];
   vlansData: { site: Site; vlans: Vlan[] }[] = [];
   loading = true;
   error: string | null = null;
+
+  private sub?: Subscription;
 
   get activeSites(): Site[] {
     return this.sites.filter(s => s.status === 'active');
   }
 
   onVlansLoaded(event: { site: Site; vlans: Vlan[] }): void {
-    // Remplace l'entrée si elle existe déjà (rechargement), sinon ajoute
     const idx = this.vlansData.findIndex(e => e.site.id === event.site.id);
-    if (idx >= 0) {
-      this.vlansData[idx] = event;
-    } else {
-      this.vlansData.push(event);
-    }
-    // Trie dans le même ordre que les sites actifs
+    if (idx >= 0) this.vlansData[idx] = event;
+    else this.vlansData.push(event);
     this.vlansData.sort((a, b) =>
       this.activeSites.findIndex(s => s.id === a.site.id) -
       this.activeSites.findIndex(s => s.id === b.site.id)
     );
   }
 
+  addSite(): void { this.drawer.open('site', 'create'); }
+
+  ngOnDestroy(): void { this.sub?.unsubscribe(); }
+
   ngOnInit(): void {
-    // On charge d'abord la liste des sites,
-    // puis on charge tous les équipements pour le tableau récap
+    this.load();
+    this.sub = this.drawer.saved$.subscribe((entity: string) => {
+      if (entity === 'site') {
+        // Rechargement complet : nouveau site ou site modifié
+        this.vlansData = [];
+        this.load();
+      } else if (entity === 'device') {
+        // Rafraîchit uniquement le tableau récap
+        this.api.getAllDevices().subscribe(devices => { this.allDevices = devices; });
+      }
+    });
+  }
+
+  private load(): void {
     forkJoin({
       sites:   this.api.getSites(),
       devices: this.api.getAllDevices()
     }).subscribe({
-      next: ({ sites, devices }) => {
+      next: ({ sites, devices }: { sites: Site[]; devices: Device[] }) => {
         this.sites      = sites;
         this.allDevices = devices;
         this.loading    = false;
